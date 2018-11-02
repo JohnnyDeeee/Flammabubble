@@ -1,4 +1,6 @@
-﻿namespace Flammabubble {
+﻿using System.Windows.Forms;
+
+namespace Flammabubble {
     // Base record class
     // basically means that each record has ATLEAST an ID property
     public class Record {
@@ -15,8 +17,8 @@
 
         public string COLLECTION_NAME { get { return this.collectionName; } }
 
-        public Interface(InterfaceBuilder interfaceBuilder, Database database) {
-            this.interfaceBuilder = interfaceBuilder;
+        public Interface(Panel parentControl, Database database) {
+            this.interfaceBuilder = new InterfaceBuilder(parentControl);
             this.database = database;
         }
 

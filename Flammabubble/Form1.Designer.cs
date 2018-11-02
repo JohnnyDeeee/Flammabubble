@@ -36,14 +36,14 @@
             this.retrieveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listRecords = new System.Windows.Forms.ListBox();
             this.textRecordInfo = new System.Windows.Forms.RichTextBox();
-            this.layoutRetrieve = new System.Windows.Forms.FlowLayoutPanel();
-            this.panelListRecords = new System.Windows.Forms.Panel();
-            this.panelTextRecordInfo = new System.Windows.Forms.Panel();
             this.layoutInsert = new System.Windows.Forms.FlowLayoutPanel();
+            this.panelTextRecordInfo = new System.Windows.Forms.Panel();
+            this.panelListRecords = new System.Windows.Forms.Panel();
+            this.layoutRetrieve = new System.Windows.Forms.TableLayoutPanel();
             this.menuStrip.SuspendLayout();
-            this.layoutRetrieve.SuspendLayout();
-            this.panelListRecords.SuspendLayout();
             this.panelTextRecordInfo.SuspendLayout();
+            this.panelListRecords.SuspendLayout();
+            this.layoutRetrieve.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -100,8 +100,9 @@
             this.listRecords.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listRecords.FormattingEnabled = true;
             this.listRecords.Location = new System.Drawing.Point(0, 0);
+            this.listRecords.Margin = new System.Windows.Forms.Padding(0);
             this.listRecords.Name = "listRecords";
-            this.listRecords.Size = new System.Drawing.Size(120, 192);
+            this.listRecords.Size = new System.Drawing.Size(85, 192);
             this.listRecords.TabIndex = 0;
             this.listRecords.SelectedIndexChanged += new System.EventHandler(this.listRecords_SelectedIndexChanged);
             // 
@@ -111,43 +112,17 @@
             this.textRecordInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textRecordInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textRecordInfo.Location = new System.Drawing.Point(0, 0);
+            this.textRecordInfo.Margin = new System.Windows.Forms.Padding(0);
             this.textRecordInfo.Name = "textRecordInfo";
             this.textRecordInfo.ReadOnly = true;
-            this.textRecordInfo.Size = new System.Drawing.Size(287, 192);
+            this.textRecordInfo.Size = new System.Drawing.Size(322, 192);
             this.textRecordInfo.TabIndex = 1;
             this.textRecordInfo.Text = "";
             // 
-            // layoutRetrieve
-            // 
-            this.layoutRetrieve.Controls.Add(this.panelListRecords);
-            this.layoutRetrieve.Controls.Add(this.panelTextRecordInfo);
-            this.layoutRetrieve.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutRetrieve.Location = new System.Drawing.Point(0, 24);
-            this.layoutRetrieve.Name = "layoutRetrieve";
-            this.layoutRetrieve.Size = new System.Drawing.Size(425, 204);
-            this.layoutRetrieve.TabIndex = 2;
-            this.layoutRetrieve.Visible = false;
-            // 
-            // panelListRecords
-            // 
-            this.panelListRecords.Controls.Add(this.listRecords);
-            this.panelListRecords.Location = new System.Drawing.Point(6, 6);
-            this.panelListRecords.Margin = new System.Windows.Forms.Padding(6);
-            this.panelListRecords.Name = "panelListRecords";
-            this.panelListRecords.Size = new System.Drawing.Size(120, 192);
-            this.panelListRecords.TabIndex = 3;
-            // 
-            // panelTextRecordInfo
-            // 
-            this.panelTextRecordInfo.Controls.Add(this.textRecordInfo);
-            this.panelTextRecordInfo.Location = new System.Drawing.Point(132, 6);
-            this.panelTextRecordInfo.Margin = new System.Windows.Forms.Padding(0, 6, 6, 6);
-            this.panelTextRecordInfo.Name = "panelTextRecordInfo";
-            this.panelTextRecordInfo.Size = new System.Drawing.Size(287, 192);
-            this.panelTextRecordInfo.TabIndex = 2;
-            // 
             // layoutInsert
             // 
+            this.layoutInsert.AutoScroll = true;
+            this.layoutInsert.AutoSize = true;
             this.layoutInsert.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutInsert.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.layoutInsert.Location = new System.Drawing.Point(0, 24);
@@ -155,26 +130,64 @@
             this.layoutInsert.Size = new System.Drawing.Size(425, 204);
             this.layoutInsert.TabIndex = 4;
             // 
+            // panelTextRecordInfo
+            // 
+            this.panelTextRecordInfo.AutoSize = true;
+            this.panelTextRecordInfo.Controls.Add(this.textRecordInfo);
+            this.panelTextRecordInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelTextRecordInfo.Location = new System.Drawing.Point(97, 6);
+            this.panelTextRecordInfo.Margin = new System.Windows.Forms.Padding(0, 6, 6, 6);
+            this.panelTextRecordInfo.Name = "panelTextRecordInfo";
+            this.panelTextRecordInfo.Size = new System.Drawing.Size(322, 192);
+            this.panelTextRecordInfo.TabIndex = 2;
+            // 
+            // panelListRecords
+            // 
+            this.panelListRecords.AutoSize = true;
+            this.panelListRecords.Controls.Add(this.listRecords);
+            this.panelListRecords.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelListRecords.Location = new System.Drawing.Point(6, 6);
+            this.panelListRecords.Margin = new System.Windows.Forms.Padding(6);
+            this.panelListRecords.Name = "panelListRecords";
+            this.panelListRecords.Size = new System.Drawing.Size(85, 192);
+            this.panelListRecords.TabIndex = 3;
+            // 
+            // layoutRetrieve
+            // 
+            this.layoutRetrieve.ColumnCount = 2;
+            this.layoutRetrieve.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.82353F));
+            this.layoutRetrieve.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.17647F));
+            this.layoutRetrieve.Controls.Add(this.panelTextRecordInfo, 0, 0);
+            this.layoutRetrieve.Controls.Add(this.panelListRecords, 0, 0);
+            this.layoutRetrieve.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutRetrieve.Location = new System.Drawing.Point(0, 24);
+            this.layoutRetrieve.Name = "layoutRetrieve";
+            this.layoutRetrieve.RowCount = 1;
+            this.layoutRetrieve.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.layoutRetrieve.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.layoutRetrieve.Size = new System.Drawing.Size(425, 204);
+            this.layoutRetrieve.TabIndex = 1;
+            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(425, 228);
-            this.Controls.Add(this.layoutRetrieve);
             this.Controls.Add(this.layoutInsert);
+            this.Controls.Add(this.layoutRetrieve);
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
+            this.MaximizeBox = false;
             this.Name = "formMain";
             this.ShowIcon = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Flammabubble";
             this.Load += new System.EventHandler(this.formMain_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
-            this.layoutRetrieve.ResumeLayout(false);
-            this.panelListRecords.ResumeLayout(false);
             this.panelTextRecordInfo.ResumeLayout(false);
+            this.panelListRecords.ResumeLayout(false);
+            this.layoutRetrieve.ResumeLayout(false);
+            this.layoutRetrieve.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -189,10 +202,10 @@
         private System.Windows.Forms.ToolStripMenuItem retrieveToolStripMenuItem;
         private System.Windows.Forms.ListBox listRecords;
         private System.Windows.Forms.RichTextBox textRecordInfo;
-        private System.Windows.Forms.FlowLayoutPanel layoutRetrieve;
+        private System.Windows.Forms.FlowLayoutPanel layoutInsert;
         private System.Windows.Forms.Panel panelListRecords;
         private System.Windows.Forms.Panel panelTextRecordInfo;
-        private System.Windows.Forms.FlowLayoutPanel layoutInsert;
+        private System.Windows.Forms.TableLayoutPanel layoutRetrieve;
     }
 }
 

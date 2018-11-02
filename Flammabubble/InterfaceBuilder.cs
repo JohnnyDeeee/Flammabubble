@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Flammabubble {
@@ -15,13 +16,77 @@ namespace Flammabubble {
 
         // Adds a row to the rows list
         // a row consists of a label + an input
+        public void AddRow(Row row) {
+            // Add the new row object to the rows list
+            rows.Add(row);
+        }
+
+        // This function will add all rows to the parent control, so they can be displayed on the screen
+        public void Build(string groupName) {
+            int padding = 10;
+
+            // Add groupBox to the parent to keep interfaces apart from eachother
+            GroupBox group = new GroupBox();
+            group.Text = groupName;
+            group.AutoSize = true;
+            group.FlatStyle = FlatStyle.Popup;
+            //group.BackColor = Color.Red; // TEMP
+            group.Padding = new Padding(padding, 0, padding, 0);
+            this.parent.Controls.Add(group);
+
+            // Add flow layout to the groupbox so we can order every row from top to bottom
+            FlowLayoutPanel mainPanel = new FlowLayoutPanel();
+            mainPanel.AutoSize = true;
+            mainPanel.FlowDirection = FlowDirection.TopDown;
+            //mainPanel.BackColor = Color.Green; // TEMP
+            mainPanel.Margin = new Padding(0);
+            group.Controls.Add(mainPanel);
+            mainPanel.Location = new Point(((group.Width - mainPanel.Width) / 2), Math.Max(15, padding)); // Important: this needs to be AFTER the panel is added to the groupbox
+
+            // Loop through all rows in the rows list
+            rows.ForEach(row => {
+                // Create a flow layout panel to keep the label + input organized
+                FlowLayoutPanel panel = new FlowLayoutPanel();
+                panel.AutoSize = true;
+                panel.FlowDirection = FlowDirection.LeftToRight;
+
+                // Add that panel to the parent panel
+                mainPanel.Controls.Add(panel);
+
+                // If we have label text, create a label control
+                if (row.label.Length > 0) {
+                    Label label = new Label();
+                    label.Text = row.label;
+                    label.AutoSize = true;
+                    label.Margin = new Padding(0, 4, 0, 0);
+
+                    // Add the label control to the flow layout panel
+                    panel.Controls.Add(label);
+                }
+
+                // Add the input to the flow layout panel
+                panel.Controls.Add(row.input);
+            });
+        }
+
+        // Removes all controls from the parent so they can be re-initialized
+        public void Clear() {
+            this.parent.Controls.Clear();
+        }
+    }
+
+    // Row object that is used for defining label + input groups
+    public class Row {
+        public string label { get; set; }
+        public Control input { get; set; }
+
         // label: Text that is displayed in front of the input
         // inputType: Type of input to display
         // items: If you use a Dropdown as inputType, you can define your items here
         // value: Used for setting the text for ReadOnly input and Button input
         // onClick: Action that is invoked everytime you click on the Button
-        // propertySetter: Action that is invoked everytime the value of the input is changed, it passes along the newValue
-        public void AddRow(string label, InputType inputType, ListItem[] items = null, string value = null, Action onClick = null, Action<object> propertySetter = null) {
+        // onChange: Action that is invoked everytime the value of the input is changed, it passes along the newValue
+        public Row(string label, InputType inputType, ListItem[] items = null, string value = null, Action onClick = null, Action<object> onChange = null) {
             // Convert onClick to an EventHandler, because controls use EventHandlers
             // I chose to use the type 'Action' for the param, because it is easier to
             // supply an Action instead of an EventHandler
@@ -37,13 +102,13 @@ namespace Flammabubble {
             switch (inputType) {
                 case InputType.Text:
                     input = new TextBox();
-                    (input as TextBox).TextChanged += (s, a) => { propertySetter((s as TextBox).Text); };
+                    (input as TextBox).TextChanged += (s, a) => { onChange((s as TextBox).Text); };
                     break;
                 case InputType.Dropdown:
                     input = new ComboBox();
                     (input as ComboBox).Items.AddRange(items);
                     (input as ComboBox).SelectedIndex = 0;
-                    (input as ComboBox).SelectedIndexChanged += (s, a) => { propertySetter((s as ComboBox).SelectedIndex); };
+                    (input as ComboBox).SelectedIndexChanged += (s, a) => { onChange((s as ComboBox).SelectedIndex); };
                     break;
                 case InputType.ReadOnly:
                     input = new TextBox();
@@ -59,47 +124,10 @@ namespace Flammabubble {
                     throw new System.Exception("No valid 'inputType' supplied");
             }
 
-            // Create a new Row object, this is mainly to keep things easier to access
-            Row newRow = new Row {
-                label = label,
-                input = input
-            };
-
-            // Add the new row object to the rows list
-            rows.Add(newRow);
+            // Set the property values for this Row object
+            this.label = label;
+            this.input = input;
         }
-
-        // This function will add all rows to the parent control, so they can be displayed on the screen
-        public void Build(Interface interfaceObject) {
-            // Loop through all rows in the rows list
-            rows.ForEach(row => {
-                // Create a flow layout panel to keep the label + input organized
-                FlowLayoutPanel panel = new FlowLayoutPanel();
-                panel.AutoSize = true;
-                panel.FlowDirection = FlowDirection.LeftToRight;
-
-                // Add that panel to the parent panel
-                parent.Controls.Add(panel);
-
-                // If we have label text, create a label control
-                if (row.label.Length > 0) {
-                    Label label = new Label();
-                    label.Text = row.label;
-
-                    // Add the label control to the flow layout panel
-                    panel.Controls.Add(label);
-                }
-
-                // Add the input to the flow layout panel
-                panel.Controls.Add(row.input);
-            });
-        }
-    }
-
-    // Row object that is used for defining label + input groups
-    public class Row {
-        public string label { get; set; }
-        public Control input { get; set; }
     }
 
     // ListItem object is used for creating items which are shown in lists input
