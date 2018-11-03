@@ -8,10 +8,7 @@ using System.Windows.Forms;
 
 namespace Flammabubble {
     public partial class formMain : Form {
-        private const string DATABASE_FILE_NAME = "database.db"; // Name of the dataabase file
-
         private ModeManager modeManager; // Decides which view to show
-        private Database database; // Provides some functions to save/get records to/from the database
         private List<Interface> interfaces = new List<Interface>(); // Keeps track on which kind of interfaces are created
 
         // Constructor
@@ -19,8 +16,6 @@ namespace Flammabubble {
             InitializeComponent();
 
             // Initialize all the 'helpers'
-            string dbFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DATABASE_FILE_NAME);
-            this.database = new Database(dbFilePath);
             this.modeManager = new ModeManager(this.layoutInsert, this.layoutRetrieve, () => { UpdateRetrieveView(); });
         }
 
@@ -34,7 +29,7 @@ namespace Flammabubble {
 
             // Add all records from the DB to this list
             this.interfaces.ForEach(_interface => {
-                foreach (Record record in this.database.GetRecords(_interface.COLLECTION_NAME).FindAll()) {
+                foreach (Record record in Database.GetRecords(_interface.COLLECTION_NAME).FindAll()) {
                     this.listRecords.Items.Add(new ListItem {
                         text = record.ID.ToString(), // Use the ID for the displayed text
                         value = record // Bind the record object to the list item as a value
@@ -56,13 +51,13 @@ namespace Flammabubble {
 
             // Create basic interface for insert mode
             // Basic interface is a custom interface and is here as an example
-            InterfaceBasic basic = new InterfaceBasic(this.layoutInsert, this.database);
+            InterfaceBasic basic = new InterfaceBasic(this.layoutInsert);
             basic.CreateInterface();
             this.interfaces.Add(basic);
 
             // TODO: REMOVE THIS
             for (int i = 0; i < 5; i++) {
-                (new InterfaceBasic(this.layoutInsert, this.database)).CreateInterface();
+                (new InterfaceBasic(this.layoutInsert)).CreateInterface();
             }
 
             // Setup form position on center of the screen (must be after the interfaces are drawn)

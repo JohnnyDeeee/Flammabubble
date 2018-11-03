@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiteDB;
+using System;
 using System.Windows.Forms;
 
 namespace Flammabubble {
@@ -25,7 +26,7 @@ namespace Flammabubble {
         public RecordBasic record = new RecordBasic(); // Keep track of the record values
 
         // Constructor
-        public InterfaceBasic(Panel parentControl, Database database) : base(parentControl, database) {
+        public InterfaceBasic(Panel parentControl) : base(parentControl) {
             base.collectionName = this.collectionName;
         }
 
@@ -33,15 +34,6 @@ namespace Flammabubble {
         // Uses the interfaceBuilder to create the actual interface
         // This is where you define what you want to see in your custom interface
         public override void CreateInterface() {
-            // Set the record ID to the amount of records in this collection + 1
-            this.record.ID = base.database.GetRecords(this.COLLECTION_NAME).Count() + 1;
-
-            // Create a ReadOnly input for the record.ID property
-            Row inputID = new Row("ID",
-                InputType.ReadOnly,
-                value: this.record.ID.ToString());
-            base.interfaceBuilder.AddRow(inputID);
-
             // Create a Text input for the record.championName property
             // the property's value will change according to the Text input's value (due to the onChange)
             Row inputChampionName = new Row("Champion name:",
@@ -117,8 +109,8 @@ namespace Flammabubble {
         // Function that is called when we hit the 'save' button
         // it sends the record to our collection in the DB
         public override void SaveToDB() {
-            base.database.SaveRecord(this.COLLECTION_NAME, this.record);
-            MessageBox.Show("Succesfully saved this record to the Database.\nIf you want to see it change the current Mode to 'Retrieve' and look for id: " + this.record.ID, "Success");
+            BsonValue id = Database.SaveRecord(this.COLLECTION_NAME, this.record);
+            MessageBox.Show("Succesfully saved this record to the Database.\nIf you want to see it change the current Mode to 'Retrieve' and look for id: " + id.ToString(), "Success");
 
             // Rerender this interface
             base.interfaceBuilder.Clear();
