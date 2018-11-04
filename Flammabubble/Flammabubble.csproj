@@ -59,6 +59,8 @@
     <Compile Include="Interface.cs" />
     <Compile Include="InterfaceBasic.cs" />
     <Compile Include="InterfaceBuilder.cs" />
+    <Compile Include="InterfacesToRender.cs" />
+    <Compile Include="InterfaceTemplate.cs" />
     <Compile Include="ModeManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

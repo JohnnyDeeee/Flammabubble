@@ -75,10 +75,11 @@ namespace Flammabubble {
                 InputType.ReadOnly,
                 value: "0");
 
-            //
+            // Create a Text input for the record.gameTime property
+            // the property's value will change according to the Text input's value (due to the onChange)
             Row inputGameTime = new Row("Game time (minutes):",
                 InputType.Text,
-                onChange: (newValue) => { this.record.gameTime = this.StringToInt(newValue.ToString()); });
+                onChange: (newValue) => { this.record.gameTime = base.StringToInt(newValue.ToString()); });
 
             // Create a Text input for the record.kills property
             // the property's value will change according to the Text input's value (due to the onChange)
@@ -87,7 +88,7 @@ namespace Flammabubble {
                 onChange: (newValue) => {
                     string stringValue = newValue.ToString();
                     this.record.kills = this.StringToInt(stringValue);
-                    inputKillsPerMinute.input.Text = ((float)this.StringToInt(stringValue) / (float)this.StringToInt(inputGameTime.input.Text)).ToString();
+                    inputKillsPerMinute.input.Text = ((float)base.StringToInt(stringValue) / (float)this.StringToInt(inputGameTime.input.Text)).ToString();
                 });
 
             base.interfaceBuilder.AddRow(inputGameTime);
@@ -124,14 +125,6 @@ namespace Flammabubble {
         protected override void Reset() {
             this.record = new RecordBasic(); // Reset the record reference, so all it's property will get their default values
             base.Reset(); // Call the parent's Reset function
-        }
-
-        // Converts a string into an Int
-        // if it fails (let's say _string = 'abcd'), then it returns -1
-        private int StringToInt(string _string) {
-            int _return = 0;
-            bool succes = Int32.TryParse(_string, out _return);
-            return succes ? _return : -1;
         }
     }
 }

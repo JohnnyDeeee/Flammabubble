@@ -1,4 +1,5 @@
 ﻿using LiteDB;
+using System;
 using System.Windows.Forms;
 
 namespace Flammabubble {
@@ -33,6 +34,14 @@ namespace Flammabubble {
         protected virtual void Reset() {
             this.interfaceBuilder.Clear();
             this.CreateInterface();
+        }
+
+        // Converts a string into an Int
+        // if it fails (let's say _string = 'abcd'), then it returns -1
+        protected int StringToInt(string _string) {
+            int _return = 0;
+            bool succes = Int32.TryParse(_string, out _return);
+            return succes ? _return : -1;
         }
     }
 }

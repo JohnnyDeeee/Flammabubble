@@ -59,11 +59,9 @@ namespace Flammabubble {
             mainForm.MaximumSize = maxSize;
             mainForm.Size = maxSize;
 
-            // Create basic interface for insert mode
-            // Basic interface is a custom interface and is here as an example
-            InterfaceBasic basic = new InterfaceBasic(this.layoutInsert);
-            basic.CreateInterface();
-            this.interfaces.Add(basic);
+            // Create all the interfaces
+            this.interfaces = InterfacesToRender.GetInterfaces(this.layoutInsert);
+            this.interfaces.ForEach(_interface => _interface.CreateInterface());
 
             // Setup form position on center of the screen (must be after the interfaces are drawn)
             mainForm.Location = new Point((workingArea.Width / 2) - (mainForm.Width / 2), (workingArea.Height - mainForm.Height) / 2);
