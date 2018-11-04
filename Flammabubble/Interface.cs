@@ -27,7 +27,7 @@ namespace Flammabubble {
 
         // This will draw the interface
         // Anything put in here will appear in ALL interface because they inherit this class
-        protected virtual void CreateInterface() { }
+        public virtual void CreateInterface() { }
 
         // Redraw the whole interface to reset all the inputs
         protected virtual void Reset() {

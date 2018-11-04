@@ -65,11 +65,6 @@ namespace Flammabubble {
             basic.CreateInterface();
             this.interfaces.Add(basic);
 
-            // TODO: REMOVE THIS
-            for (int i = 0; i < 5; i++) {
-                (new InterfaceBasic(this.layoutInsert)).CreateInterface();
-            }
-
             // Setup form position on center of the screen (must be after the interfaces are drawn)
             mainForm.Location = new Point((workingArea.Width / 2) - (mainForm.Width / 2), (workingArea.Height - mainForm.Height) / 2);
 
