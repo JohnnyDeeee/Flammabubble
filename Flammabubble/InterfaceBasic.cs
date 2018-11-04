@@ -96,11 +96,18 @@ namespace Flammabubble {
 
             // Create a Button to save the record into the DB
             // we don't need a label for the button so we can use "" or null for the first param
-            Row inputButton = new Row("",
+            Row inputSave = new Row("",
                 InputType.Button,
                 value: "Save",
                 onClick: this.SaveToDB);
-            base.interfaceBuilder.AddRow(inputButton);
+            base.interfaceBuilder.AddRow(inputSave);
+
+            // Create a Button to reset the values in all inputs (just redraw the whole interface)
+            Row inputReset = new Row("",
+                InputType.Button,
+                value: "Reset",
+                onClick: this.Reset);
+            this.interfaceBuilder.AddRow(inputReset);
 
             // Don't forget to actually 'render' everything to the screen
             base.interfaceBuilder.Build(this.collectionName);
@@ -108,13 +115,15 @@ namespace Flammabubble {
 
         // Function that is called when we hit the 'save' button
         // it sends the record to our collection in the DB
-        public override void SaveToDB() {
+        private void SaveToDB() {
             BsonValue id = Database.SaveRecord(this.COLLECTION_NAME, this.record);
             MessageBox.Show("Succesfully saved this record to the Database.\nIf you want to see it change the current Mode to 'Retrieve' and look for id: " + id.ToString(), "Success");
+        }
 
-            // Rerender this interface
-            base.interfaceBuilder.Clear();
-            base.interfaceBuilder.Build(this.collectionName);
+        // Redraw the whole interface to reset all the inputs
+        protected override void Reset() {
+            this.record = new RecordBasic(); // Reset the record reference, so all it's property will get their default values
+            base.Reset(); // Call the parent's Reset function
         }
 
         // Converts a string into an Int

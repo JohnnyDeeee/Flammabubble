@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,10 +41,13 @@
             this.panelTextRecordInfo = new System.Windows.Forms.Panel();
             this.panelListRecords = new System.Windows.Forms.Panel();
             this.layoutRetrieve = new System.Windows.Forms.TableLayoutPanel();
+            this.contextListRecordsItem = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.panelTextRecordInfo.SuspendLayout();
             this.panelListRecords.SuspendLayout();
             this.layoutRetrieve.SuspendLayout();
+            this.contextListRecordsItem.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -97,11 +101,13 @@
             // 
             // listRecords
             // 
+            this.listRecords.ContextMenuStrip = this.contextListRecordsItem;
             this.listRecords.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listRecords.FormattingEnabled = true;
             this.listRecords.Location = new System.Drawing.Point(0, 0);
             this.listRecords.Margin = new System.Windows.Forms.Padding(0);
             this.listRecords.Name = "listRecords";
+            this.listRecords.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.listRecords.Size = new System.Drawing.Size(85, 192);
             this.listRecords.TabIndex = 0;
             this.listRecords.SelectedIndexChanged += new System.EventHandler(this.listRecords_SelectedIndexChanged);
@@ -168,13 +174,27 @@
             this.layoutRetrieve.Size = new System.Drawing.Size(425, 204);
             this.layoutRetrieve.TabIndex = 1;
             // 
+            // contextListRecordsItem
+            // 
+            this.contextListRecordsItem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.deleteToolStripMenuItem});
+            this.contextListRecordsItem.Name = "contextListRecordsItem";
+            this.contextListRecordsItem.Size = new System.Drawing.Size(108, 26);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteToolStripMenuItem.Text = "Delete";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(425, 228);
-            this.Controls.Add(this.layoutInsert);
             this.Controls.Add(this.layoutRetrieve);
+            this.Controls.Add(this.layoutInsert);
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
             this.MaximizeBox = false;
@@ -188,6 +208,7 @@
             this.panelListRecords.ResumeLayout(false);
             this.layoutRetrieve.ResumeLayout(false);
             this.layoutRetrieve.PerformLayout();
+            this.contextListRecordsItem.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -206,6 +227,8 @@
         private System.Windows.Forms.Panel panelListRecords;
         private System.Windows.Forms.Panel panelTextRecordInfo;
         private System.Windows.Forms.TableLayoutPanel layoutRetrieve;
+        private System.Windows.Forms.ContextMenuStrip contextListRecordsItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
     }
 }
 

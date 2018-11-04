@@ -7,11 +7,12 @@ namespace Flammabubble {
     // This class helps you build custom 'insert' (mode) interfaces
     public class InterfaceBuilder {
         private List<Row> rows = new List<Row>(); // Keeps track of all the rows in the current 'build'
-        private Panel parent; // All 'rows' will be added to this parent panel
+        private GroupBox group = new GroupBox(); // All rows will be added to this control
 
         // Constructor
         public InterfaceBuilder(Panel parent) {
-            this.parent = parent;
+            this.group.Visible = false;
+            parent.Controls.Add(group);
         }
 
         // Adds a row to the rows list
@@ -25,14 +26,16 @@ namespace Flammabubble {
         public void Build(string groupName) {
             int padding = 10;
 
+            // Hide the parent control that holds all the interface
+            // so you don't see the 1 second change in layout when all the controls are beign added
+            this.group.Parent.Visible = false;
+
             // Add groupBox to the parent to keep interfaces apart from eachother
-            GroupBox group = new GroupBox();
-            group.Text = groupName;
-            group.AutoSize = true;
-            group.FlatStyle = FlatStyle.Popup;
-            //group.BackColor = Color.Red; // TEMP
-            group.Padding = new Padding(padding, 0, padding, 0);
-            this.parent.Controls.Add(group);
+            this.group.Text = groupName;
+            this.group.AutoSize = true;
+            this.group.FlatStyle = FlatStyle.Popup;
+            this.group.Padding = new Padding(padding, 0, padding, 0);
+            this.group.Visible = true;
 
             // Add flow layout to the groupbox so we can order every row from top to bottom
             FlowLayoutPanel mainPanel = new FlowLayoutPanel();
@@ -41,7 +44,7 @@ namespace Flammabubble {
             //mainPanel.BackColor = Color.Green; // TEMP
             mainPanel.Margin = new Padding(0);
             group.Controls.Add(mainPanel);
-            mainPanel.Location = new Point(((group.Width - mainPanel.Width) / 2), Math.Max(15, padding)); // Important: this needs to be AFTER the panel is added to the groupbox
+            mainPanel.Location = new Point(((this.group.Width - mainPanel.Width) / 2), Math.Max(15, padding)); // Important: this needs to be AFTER the panel is added to the groupbox
 
             // Loop through all rows in the rows list
             rows.ForEach(row => {
@@ -67,11 +70,15 @@ namespace Flammabubble {
                 // Add the input to the flow layout panel
                 panel.Controls.Add(row.input);
             });
+
+            // Don't forget to show the parent control
+            this.group.Parent.Visible = true;
         }
 
         // Removes all controls from the parent so they can be re-initialized
         public void Clear() {
-            this.parent.Controls.Clear();
+            this.group.Controls.Clear();
+            this.rows.Clear();
         }
     }
 
@@ -109,6 +116,7 @@ namespace Flammabubble {
                     (input as ComboBox).Items.AddRange(items);
                     (input as ComboBox).SelectedIndex = 0;
                     (input as ComboBox).SelectedIndexChanged += (s, a) => { onChange((s as ComboBox).SelectedIndex); };
+                    (input as ComboBox).DropDownStyle = ComboBoxStyle.DropDownList;
                     break;
                 case InputType.ReadOnly:
                     input = new TextBox();
@@ -130,7 +138,7 @@ namespace Flammabubble {
         }
     }
 
-    // ListItem object is used for creating items which are shown in lists input
+    // ListItem class is used for creating items which are shown in lists input
     public class ListItem {
         public object value { get; set; }
         public string text { get; set; }
@@ -138,6 +146,24 @@ namespace Flammabubble {
         public override string ToString() {
             return text;
         }
+    }
+
+    // ListItemRecord class is used for creating items which are shown in the listRecords in the retrieve view(mode)
+    public class ListItemRecord {
+        public ListItemRecordValue value { get; set; }
+        public string text { get; set; }
+
+        public override string ToString() {
+            return text;
+        }
+    }
+
+    // ListItemRecordValue class is used for the 'value' property of the ListItemRecord class, because 
+    // we want to know in which collection a record is stored when we right click on a record in the 'retrieve' view(mode)
+    // so we can remove that record from it's collection if the user decides to do so
+    public class ListItemRecordValue {
+        public Record record { get; set; }
+        public string collectionName { get; set; }
     }
 
     // Types of inputs you can choose from

@@ -26,16 +26,26 @@ namespace Flammabubble {
             // this interface is fixed, so it is not created with the InterfaceBuilder
             ListBox records = this.listRecords;
             records.Items.Clear();
+            records.Enabled = true;
 
             // Add all records from the DB to this list
-            this.interfaces.ForEach(_interface => {
+            this.interfaces.ForEach(_interface => { // I'm using a 'underscore' here because the variable 'interface' already exists, and this way i have kind of the same name
                 foreach (Record record in Database.GetRecords(_interface.COLLECTION_NAME).FindAll()) {
-                    this.listRecords.Items.Add(new ListItem {
+                    this.listRecords.Items.Add(new ListItemRecord {
                         text = record.ID.ToString(), // Use the ID for the displayed text
-                        value = record // Bind the record object to the list item as a value
+                        value = new ListItemRecordValue{ record = record, collectionName = _interface.COLLECTION_NAME } // Bind the record object to the list item as a value
                     });
                 }
             });
+
+            // If we have found no items, show some feedback
+            if (records.Items.Count == 0) {
+                records.Items.Add(new ListItemRecord { text = "nothing found...", value = null });
+                records.Enabled = false;
+            }
+
+            // Clear the text on the info text box
+            this.textRecordInfo.Text = "";
         }
 
         // Called when the form is loaded
@@ -85,7 +95,7 @@ namespace Flammabubble {
         // Called whenever the selection changes in the retrieve view list
         private void listRecords_SelectedIndexChanged(object sender, EventArgs e) {
             this.textRecordInfo.Text = ""; // Clear the current text on the right
-            object record = (this.listRecords.SelectedItem as ListItem).value; // Get the record that was binded to the list item's value
+            Record record = (this.listRecords.SelectedItem as ListItemRecord).value.record; // Get the record that was binded to the list item's value
 
             // Show all its properties + their values in the textbox on the right
             foreach (PropertyInfo property in record.GetType().GetProperties()) {
@@ -96,6 +106,16 @@ namespace Flammabubble {
                     propertyValue = "N/A";
                 this.textRecordInfo.Text += $"{property.Name}: {propertyValue}\n";
             }
+        }
+
+        // Called when you click on the listRecords context menu item "Delete" 
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e) {
+            // Delete selected record from Database
+            foreach (ListItemRecord listItem in this.listRecords.SelectedItems) {
+                Database.DeleteRecord(listItem.value.collectionName, listItem.value.record);
+            }
+
+            this.UpdateRetrieveView();
         }
     }
 }
